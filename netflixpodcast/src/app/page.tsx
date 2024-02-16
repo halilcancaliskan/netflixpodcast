@@ -35,7 +35,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="text-blue-500"
           >
-            Audio Blog
+            Spreaker
           </a>
         </p>
       </footer>
