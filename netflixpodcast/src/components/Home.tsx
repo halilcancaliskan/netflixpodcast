@@ -27,7 +27,6 @@ const Home = () => {
   const [movie, setMovie] = useState<IMovie>();
 
   useEffect(() => {
-
     let searchMovie = searchParams.get("movie");
 
     if (searchMovie === null) {
@@ -58,24 +57,24 @@ const Home = () => {
       (element) => element.type === "Trailer"
     );
 
-    const trailerURL = `https://www.youtube.com/watch?v=${movie?.videos?.results[trailerIndex || 0]?.key
-      }`;
+    const trailerURL = `https://www.youtube.com/watch?v=${
+      movie?.videos?.results[trailerIndex || 0]?.key
+    }`;
     setTrailer(trailerURL);
   }, [movie]);
   return (
     <div className="bg-secondary relative px-4 md:px-0">
-
       <div className="container mx-auto min-h-[calc(100vh-77px)] flex items-center relative">
         <div className="flex-col lg:flex-row flex gap-10 lg:mx-10 py-20">
-          <div className="mx-auto flex-none relative">
+          <div className="mx-auto flex-none relative rounded-md">
             <Image
               src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
               width={700}
               height={700}
-              className="w-[300px] object-cover"
+              className="w-[300px] object-cover rounded-md"
               alt="movie poster"
               priority
-              unoptimized  // Utilisez cette propriété pour contrôler le rendu côté serveur
+              unoptimized // Utilisez cette propriété pour contrôler le rendu côté serveur
             />
           </div>
 
@@ -84,12 +83,13 @@ const Home = () => {
               {movie?.title}
             </div>
             <div className="flex flex-col md:flex-row gap-2 md:gap-6">
-              <div>Durée : {movie?.runtime} MIN.</div>
-              <div>Avis : {movie?.vote_average} ⭐</div>
+              <div>Date de sortie : {movie?.release_date}</div>
+              <div>Durée : {movie?.runtime} Minutes</div>
+              <div>Note global : {movie?.vote_average}/10</div>
             </div>
 
             <div className="pt-14 space-y-2 pr-4">
-              <div>RÉSUMÉ :</div>
+              <div>Synopsis :</div>
               <div className="lg:line-clamp-4">{movie?.overview}</div>
             </div>
 
@@ -97,7 +97,7 @@ const Home = () => {
               className="inline-block pt-6 cursor-pointer"
               onClick={() => setShowPlayer(true)}
             >
-              <div className="flex gap-2 items-center bg-white text-black px-4 py-2 mb-6">
+              <div className="flex gap-2 items-center bg-red-500 text-white px-4 py-2 mb-6 rounded-md cursor-pointer">
                 Regarder la bande-annonce
               </div>
             </div>
@@ -106,8 +106,9 @@ const Home = () => {
 
         {/* React Player */}
         <div
-          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
-            }`}
+          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${
+            showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
+          }`}
         >
           <div className="flex items-center justify-between bg-black text-[#f9f9f9] p-3.5">
             <span className="font-semibold">Bande annonce</span>
