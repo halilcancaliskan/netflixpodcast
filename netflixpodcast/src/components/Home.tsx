@@ -63,21 +63,40 @@ const Home = () => {
     setTrailer(trailerURL);
   }, [movie]);
   return (
-    <div className="bg-secondary relative px-4 md:px-0">
-      <div className="container mx-auto min-h-[calc(100vh-77px)] flex items-center relative">
+    <div
+      className="relative px-4 md:px-0"
+      style={{
+        backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie?.poster_path})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      {/* Overlay for Blur Effect */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+
+      {/* Content Container */}
+      <div className="container mx-auto min-h-[calc(100vh-77px)] flex items-center relative z-10">
         <div className="flex-col lg:flex-row flex gap-10 lg:mx-10 py-20">
-          <div className="mx-auto flex-none relative rounded-md">
-            <Image
-              src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
-              width={700}
-              height={700}
-              className="w-[300px] object-cover rounded-md"
-              alt="movie poster"
-              priority
-              unoptimized // Utilisez cette propriété pour contrôler le rendu côté serveur
-            />
+          {/* Movie Poster */}
+          <div
+            className="mx-auto flex-none relative rounded-md"
+            style={{ boxShadow: "1px 1px 20px 1px rgba(255, 255, 255, 0.2)" }}
+          >
+            {movie?.poster_path && (
+              <Image
+                src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+                width={700}
+                height={700}
+                className="w-[300px] object-cover rounded-md"
+                alt="movie poster"
+                priority
+                unoptimized
+              />
+            )}
           </div>
 
+          {/* Movie Details */}
           <div className="space-y-6">
             <div className="uppercase -translate-y-3 text-[26px] md:text-[34px] font-medium pr-4 text-white">
               {movie?.title}
@@ -93,6 +112,7 @@ const Home = () => {
               <div className="lg:line-clamp-4">{movie?.overview}</div>
             </div>
 
+            {/* Trailer Button */}
             <div
               className="inline-block pt-6 cursor-pointer"
               onClick={() => setShowPlayer(true)}
@@ -104,7 +124,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* React Player */}
+        {/* React Player for Trailer */}
         <div
           className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${
             showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
