@@ -8,6 +8,9 @@
   }
 }
 
+html {
+  overflow-y: hidden;
+}
 
 .lds-ring {
   display: inline-block;

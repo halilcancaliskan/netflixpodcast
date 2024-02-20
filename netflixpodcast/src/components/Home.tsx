@@ -27,29 +27,36 @@ const Home = () => {
   const [movie, setMovie] = useState<IMovie>();
 
   useEffect(() => {
-    let searchMovie = searchParams.get("movie");
+    const searchMovie = searchParams.get("movie");
 
-    if (searchMovie === null) {
-      searchMovie = "avengers";
+    if (searchMovie) {
+      axios
+        .get(`https://api.themoviedb.org/3/search/movie`, {
+          params: {
+            api_key: process.env.NEXT_PUBLIC_API_KEY,
+            query: searchMovie,
+          },
+        })
+        .then((res) => {
+          if (res.data.results.length > 0) {
+            const movieId = res.data.results[0].id;
+            return axios.get(
+              `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&append_to_response=videos`
+            );
+          } else {
+            // Handle no search results
+            console.log("No results found");
+            return Promise.reject("No results found");
+          }
+        })
+        .then((res) => {
+          setMovie(res.data);
+        })
+        .catch((error) => {
+          console.error(error);
+          // Optionally set some state to show an error message or handle the error
+        });
     }
-
-    axios
-      .get(`https://api.themoviedb.org/3/search/movie`, {
-        params: {
-          api_key: process.env.NEXT_PUBLIC_API_KEY,
-          query: searchMovie,
-        },
-      })
-      .then((res) => {
-        axios
-          .get(
-            `https://api.themoviedb.org/3/movie/${res?.data?.results[0]?.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&append_to_response=videos`
-          )
-          .then((res) => {
-            setMovie(res.data);
-            console.log(res.data);
-          });
-      });
   }, [searchParams]);
 
   useEffect(() => {
@@ -57,8 +64,9 @@ const Home = () => {
       (element) => element.type === "Trailer"
     );
 
-    const trailerURL = `https://www.youtube.com/watch?v=${movie?.videos?.results[trailerIndex || 0]?.key
-      }`;
+    const trailerURL = `https://www.youtube.com/watch?v=${
+      movie?.videos?.results[trailerIndex || 0]?.key
+    }`;
     setTrailer(trailerURL);
   }, [movie]);
 
@@ -74,6 +82,7 @@ const Home = () => {
         backgroundSize: "cover",
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
+        overflowY: "hidden",
       }}
     >
       {/* Overlay for Blur Effect */}
@@ -130,11 +139,11 @@ const Home = () => {
 
         {/* React Player for Trailer */}
         <div
-          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
-            }`}
+          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${
+            showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
+          }`}
         >
           <div className="flex items-center justify-between bg-black text-[#f9f9f9] p-3.5">
-            <span className="font-semibold">Bande annonce</span>
             <div
               className="cursor-pointer w-8 h-8 flex justify-center items-center rounded-lg opacity-50 hover:opacity-75 hover:bg-[#0F0F0F]"
               onClick={() => setShowPlayer(false)}
