@@ -73,7 +73,7 @@ const Home = () => {
       }}
     >
       {/* Overlay for Blur Effect */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-2xl"></div>
 
       {/* Content Container */}
       <div className="container mx-auto min-h-[calc(100vh-77px)] flex items-center relative z-10">
