@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
-import { BsPlayFill } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import dynamic from "next/dynamic";
+import LandingPage from "./LandingPage";
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -57,11 +57,15 @@ const Home = () => {
       (element) => element.type === "Trailer"
     );
 
-    const trailerURL = `https://www.youtube.com/watch?v=${
-      movie?.videos?.results[trailerIndex || 0]?.key
-    }`;
+    const trailerURL = `https://www.youtube.com/watch?v=${movie?.videos?.results[trailerIndex || 0]?.key
+      }`;
     setTrailer(trailerURL);
   }, [movie]);
+
+  if (!searchParams.get("movie")) {
+    return <LandingPage />;
+  }
+
   return (
     <div
       className="relative px-4 md:px-0"
@@ -126,9 +130,8 @@ const Home = () => {
 
         {/* React Player for Trailer */}
         <div
-          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${
-            showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
-          }`}
+          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
+            }`}
         >
           <div className="flex items-center justify-between bg-black text-[#f9f9f9] p-3.5">
             <span className="font-semibold">Bande annonce</span>
