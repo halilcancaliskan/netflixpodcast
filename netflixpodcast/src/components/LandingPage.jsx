@@ -33,7 +33,7 @@ const LandingPage = () => {
                         </p>
 
                         <p className="text-lg mt-6">
-                            En choisissant Trailer Vision, vous faites le choix d'un divertissement de qualité, tout en prenant part à un mouvement pour un avenir plus durable. Rejoignez-nous dans cette aventure vers un divertissement responsable !
+                            En choisissant Trailer Vision, vous faites le choix d un divertissement de qualité, tout en prenant part à un mouvement pour un avenir plus durable. Rejoignez-nous dans cette aventure vers un divertissement responsable !
                         </p>
                     </div>
 
@@ -41,22 +41,22 @@ const LandingPage = () => {
                         <h1 className="text-4xl font-bold mb-6">Notre Engagement Green IT</h1>
 
                         <p className="text-lg mb-4">
-                            Chez Trailer Vision, nous sommes déterminés à minimiser notre impact sur l'environnement
+                            Chez Trailer Vision, nous sommes déterminés à minimiser notre impact sur l environnement
                             et à encourager des habitudes de navigation plus durables. Voici quelques raisons
                             pour lesquelles vous devriez choisir Trailer Vision comme votre site de divertissement
                             préféré :
                         </p>
 
                         <ul className="list-disc ml-8">
-                            <li>Utilisation d'un hébergement écoénergétique et de serveurs basse consommation.</li>
+                            <li>Utilisation d un hébergement écoénergétique et de serveurs basse consommation.</li>
                             <li>Optimisation du code pour une charge rapide et une utilisation efficace des ressources.</li>
                             <li>Encouragement à la réduction des impressions et à la promotion du numérique.</li>
-                            <li>Partenariats avec des fournisseurs d'énergie renouvelable.</li>
+                            <li>Partenariats avec des fournisseurs d énergie renouvelable.</li>
                         </ul>
 
                         <p className="text-lg mt-6">
                             En choisissant Trailer Vision, vous contribuez à la protection de notre planète tout en
-                            profitant d'une expérience de divertissement exceptionnelle. Ensemble, faisons un choix
+                            profitant d une expérience de divertissement exceptionnelle. Ensemble, faisons un choix
                             responsable pour un avenir durable.
                         </p>
                     </div>
