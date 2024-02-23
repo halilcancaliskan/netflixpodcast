@@ -48,10 +48,10 @@ const LandingPage = () => {
                         </p>
 
                         <ul className="list-disc ml-8">
-                            <li>Utilisation d un hébergement écoénergétique et de serveurs basse consommation.</li>
+                            <li>Utilisation de caches pour éviter d envoyer la même requête deux fois et réduire la consommation énergétique.</li>
                             <li>Optimisation du code pour une charge rapide et une utilisation efficace des ressources.</li>
                             <li>Encouragement à la réduction des impressions et à la promotion du numérique.</li>
-                            <li>Partenariats avec des fournisseurs d énergie renouvelable.</li>
+                            <li>Utilisation d API avec de faible latence.</li>
                         </ul>
 
                         <p className="text-lg mt-6">
