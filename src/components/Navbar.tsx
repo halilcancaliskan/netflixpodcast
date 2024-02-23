@@ -6,7 +6,7 @@ import Image from "next/image";
 import Logo from "./TrailerVisionLogo.png";
 import axios from "axios";
 
-const genres = ["Horror", "Comedy", "Action", "Drama"];
+const genres = ["Horreur", "Comedie", "Action", "Drame"];
 
 const Navbar = () => {
   const [input, setInput] = useState("");
@@ -20,12 +20,15 @@ const Navbar = () => {
 
   const filterByGenre = async (genre: string) => {
     try {
-      const response = await axios.get("https://api.themoviedb.org/3/discover/movie", {
-        params: {
-          api_key: process.env.NEXT_PUBLIC_API_KEY,
-          with_genres: getGenreId(genre),
-        },
-      });
+      const response = await axios.get(
+        "https://api.themoviedb.org/3/discover/movie",
+        {
+          params: {
+            api_key: process.env.NEXT_PUBLIC_API_KEY,
+            with_genres: getGenreId(genre),
+          },
+        }
+      );
 
       console.log(`Filtered Movies for ${genre}:`, response.data.results);
       // Handle the API response, set state with filtered movies, etc.
@@ -37,10 +40,10 @@ const Navbar = () => {
 
   const getGenreId = (genre: string): number => {
     const genreMapping: Record<string, number> = {
-      Horror: 27,
-      Comedy: 35,
+      Horreur: 27,
+      Comedie: 35,
       Action: 28,
-      Drama: 18,
+      Drame: 18,
     };
 
     return genreMapping[genre] || 0;
@@ -51,7 +54,12 @@ const Navbar = () => {
       <div className="bg-black py-5 px-4 md:px-0">
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/">
-            <Image src={Logo} alt="Trailer Vision Logo" width={40} height={20} />
+            <Image
+              src={Logo}
+              alt="Trailer Vision Logo"
+              width={40}
+              height={20}
+            />
           </Link>
           <div className="space-x-4">
             {genres.map((genre) => (
