@@ -1,4 +1,6 @@
 "use client";
+// ...
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -25,48 +27,57 @@ const Home = () => {
   const [showPlayer, setShowPlayer] = useState(false);
   const [trailer, setTrailer] = useState("");
   const [movie, setMovie] = useState<IMovie>();
+  const [cachedMovies, setCachedMovies] = useState<{ [key: string]: IMovie }>({});
 
   useEffect(() => {
     const searchMovie = searchParams.get("movie");
 
     if (searchMovie) {
-      axios
-        .get(`https://api.themoviedb.org/3/search/movie`, {
-          params: {
-            api_key: process.env.NEXT_PUBLIC_API_KEY,
-            query: searchMovie,
-          },
-        })
-        .then((res) => {
-          if (res.data.results.length > 0) {
-            const movieId = res.data.results[0].id;
-            return axios.get(
-              `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&append_to_response=videos`
-            );
-          } else {
-            // Handle no search results
-            console.log("No results found");
-            return Promise.reject("No results found");
-          }
-        })
-        .then((res) => {
-          setMovie(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-          // Optionally set some state to show an error message or handle the error
-        });
+      // Vérifier d'abord s'il existe dans le cache local
+      if (cachedMovies[searchMovie]) {
+        setMovie(cachedMovies[searchMovie]);
+      } else {
+        axios
+          .get(`https://api.themoviedb.org/3/search/movie`, {
+            params: {
+              api_key: process.env.NEXT_PUBLIC_API_KEY,
+              query: searchMovie,
+            },
+          })
+          .then((res) => {
+            if (res.data.results.length > 0) {
+              const movieId = res.data.results[0].id;
+              return axios.get(
+                `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&append_to_response=videos`
+              );
+            } else {
+              console.log("No results found");
+              return Promise.reject("No results found");
+            }
+          })
+          .then((res) => {
+            // Stocker le résultat dans le cache local
+            setCachedMovies((prevCachedMovies) => ({
+              ...prevCachedMovies,
+              [searchMovie]: res.data,
+            }));
+            setMovie(res.data);
+          })
+          .catch((error) => {
+            console.error(error);
+            // Gérer les erreurs si nécessaire
+          });
+      }
     }
-  }, [searchParams]);
+  }, [searchParams, cachedMovies]);
 
   useEffect(() => {
     const trailerIndex = movie?.videos?.results?.findIndex(
       (element) => element.type === "Trailer"
     );
 
-    const trailerURL = `https://www.youtube.com/watch?v=${
-      movie?.videos?.results[trailerIndex || 0]?.key
-    }`;
+    const trailerURL = `https://www.youtube.com/watch?v=${movie?.videos?.results[trailerIndex || 0]?.key
+      }`;
     setTrailer(trailerURL);
   }, [movie]);
 
@@ -139,9 +150,8 @@ const Home = () => {
 
         {/* React Player for Trailer */}
         <div
-          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${
-            showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
-          }`}
+          className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${showPlayer ? "opacity-100 z-50" : "opacity-0 -z-10"
+            }`}
         >
           <div className="flex items-center justify-between bg-black text-[#f9f9f9] p-3.5">
             <div
