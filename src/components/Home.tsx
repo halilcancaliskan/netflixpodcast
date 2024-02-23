@@ -1,6 +1,4 @@
 "use client";
-// ...
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -51,6 +49,7 @@ const Home = () => {
                 `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.NEXT_PUBLIC_API_KEY}&append_to_response=videos`
               );
             } else {
+              // Handle no search results
               console.log("No results found");
               return Promise.reject("No results found");
             }

@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Logo from "./TrailerVisionLogo.png";
+import axios from "axios";
+
+const genres = ["Horror", "Comedy", "Action", "Drama"];
 
 const Navbar = () => {
   const [input, setInput] = useState("");
@@ -15,6 +18,34 @@ const Navbar = () => {
     setInput("");
   };
 
+  const filterByGenre = async (genre: string) => {
+    try {
+      const response = await axios.get("https://api.themoviedb.org/3/discover/movie", {
+        params: {
+          api_key: process.env.NEXT_PUBLIC_API_KEY,
+          with_genres: getGenreId(genre),
+        },
+      });
+
+      console.log(`Filtered Movies for ${genre}:`, response.data.results);
+      // Handle the API response, set state with filtered movies, etc.
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      // Optionally set some state to show an error message or handle the error
+    }
+  };
+
+  const getGenreId = (genre: string): number => {
+    const genreMapping: Record<string, number> = {
+      Horror: 27,
+      Comedy: 35,
+      Action: 28,
+      Drama: 18,
+    };
+
+    return genreMapping[genre] || 0;
+  };
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="bg-black py-5 px-4 md:px-0">
@@ -22,6 +53,17 @@ const Navbar = () => {
           <Link href="/">
             <Image src={Logo} alt="Trailer Vision Logo" width={40} height={20} />
           </Link>
+          <div className="space-x-4">
+            {genres.map((genre) => (
+              <button
+                key={genre}
+                className="bg-blue-500 text-gray-100 py-2 px-4 rounded-md"
+                onClick={() => filterByGenre(genre)}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
           <form onSubmit={searchMovie}>
             <div className="space-x-4">
               <input
@@ -34,7 +76,7 @@ const Navbar = () => {
 
               <button
                 type="submit"
-                className="bg-red-500 text-gray-100  py-2 px-4 color: #00a400 rounded-md"
+                className="bg-blue-500 text-gray-100 py-2 px-4 color: #00a400 rounded-md"
               >
                 Rechercher
               </button>
